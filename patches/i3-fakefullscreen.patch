@@ -1,0 +1,26 @@
+diff --git a/src/con.c b/src/con.c
+index e0993ade..69f09cd3 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -1051,20 +1051,13 @@ void con_toggle_fullscreen(Con *con, int fullscreen_mode) {
+  *
+  */
+ static void con_set_fullscreen_mode(Con *con, fullscreen_mode_t fullscreen_mode) {
+-    con->fullscreen_mode = fullscreen_mode;
+-
+-    DLOG("mode now: %d\n", con->fullscreen_mode);
+-
+-    /* Send an ipc window "fullscreen_mode" event */
+-    ipc_send_window_event("fullscreen_mode", con);
+-
+     /* update _NET_WM_STATE if this container has a window */
+     /* TODO: when a window is assigned to a container which is already
+      * fullscreened, this state needs to be pushed to the client, too */
+     if (con->window == NULL)
+         return;
+
+-    if (con->fullscreen_mode != CF_NONE) {
++    if (fullscreen_mode != CF_NONE) {
+         DLOG("Setting _NET_WM_STATE_FULLSCREEN for con = %p / window = %d.\n", con, con->window->id);
+         xcb_add_property_atom(conn, con->window->id, A__NET_WM_STATE, A__NET_WM_STATE_FULLSCREEN);
+     } else {
